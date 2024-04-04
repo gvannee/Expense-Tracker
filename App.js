@@ -13,9 +13,11 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator screenOptions={{
           headerStyle: {
-            backgroundColor: 'rgba(120, 0, 0, 1)', // Set background color to transparent
-            
-          }
+            backgroundColor: 'rgba(116, 7, 7, 1)', 
+          },
+          headerTintColor: 'white',
+          presentation: 'modal',
+          
         }}>
           <Stack.Screen name='Home' component={ExpenseOverview}
             options={{

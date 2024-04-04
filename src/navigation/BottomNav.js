@@ -26,7 +26,8 @@ export default function ExpenseOverview() {
                             <MaterialCommunityIcons name='home-edit' color= {color} size={size} />
                         ),
                         headerRight: ({tintColor}) => (
-                            <IconButton icon="plus" size={24} color={tintColor}/>
+                            <IconButton icon="plus" size={24} color={tintColor}
+                            onPress={() => {navigation.navigate('ManageExpense')}}/>
                         )
     
                     }

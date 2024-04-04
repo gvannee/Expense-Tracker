@@ -3,20 +3,23 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { GlobalStyles } from "../constants/Style";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { getFormatDate } from "../util/date";
+import { useNavigation } from "@react-navigation/native";
 
 
-export default function ExpenseItem({ itemType, description, amount, date }) {
+export default function ExpenseItem({ id, itemType, description, amount, date }) {
+    const navigation = useNavigation();
     const loadIcon = (type) => {
         if (type == 'study') {
-            return 'book-open-variant'
+            return 'book-open-variant';
         } else if (type == 'accessory') {
-            return 'tshirt-crew'
+            return 'tshirt-crew';
         } else {
-            return 'food'
+            return 'food';
         }
     }
+
     return (
-        <Pressable onPress={() => console.log("click")}>
+        <Pressable onPress={() => navigation.navigate('ManageExpense', {expenseId: id})}>
             <LinearGradient colors={[GlobalStyles.bgStart, GlobalStyles.bgEnd]}
                 style={styles.container}
                 start={{ x: 0, y: 0 }}

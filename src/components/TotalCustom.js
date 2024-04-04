@@ -2,16 +2,20 @@ import { StyleSheet, Text, View } from "react-native"
 import TotalTitle from "./TotalTitle"
 import { LinearGradient } from "expo-linear-gradient"
 
-export default function TotalCustom({ screen, total }) {
+export default function TotalCustom({ screen, total, title }) {
 
     return (
         <LinearGradient colors={['rgba(120, 0, 0, 1)', 'rgba(73, 0, 0, 0.5)']}
             style={styles.container}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}>
-            <TotalTitle title='Available Balance' value={20000 - total} />
-            <View style={styles.line}></View>
-            <TotalTitle title='Spent' value={total} />
+                {screen == 'All' ? <>
+                <TotalTitle title='Available Balance' value={20000 - total} />
+                <View style={styles.line}></View>
+                </>  : null}
+            
+                
+            <TotalTitle title={title} value={total} />
 
             {/* <Text style={styles.text}>{screen}</Text>
             <Text style={styles.text}>{total}</Text> */}

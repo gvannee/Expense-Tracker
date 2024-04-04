@@ -3,10 +3,13 @@ import ExpenseItem from "./ExpenseItem";
 
 
 export default function ExpenseList({list}) {
+    const renderExpenseItem = (item) => {
+        return <ExpenseItem {...item.item} />
+    }
     return(
         <FlatList data={list} 
         keyExtractor={(item) => item.id} 
-        renderItem={({item}) => (<ExpenseItem amount={item.amount} date={item.date} description={item.description} itemType={item.type} />)}
+        renderItem={renderExpenseItem}
         />
 
     )
