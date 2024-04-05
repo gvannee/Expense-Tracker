@@ -10,7 +10,7 @@ export default function TotalCustom({ screen, total, title }) {
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}>
                 {screen == 'All' ? <>
-                <TotalTitle title='Available Balance' value={20000 - total} />
+                <TotalTitle title='Available Balance' value={(2000.00 - total).toFixed(2)} />
                 <View style={styles.line}></View>
                 </>  : null}
             

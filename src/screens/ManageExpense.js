@@ -1,15 +1,34 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { useLayoutEffect } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { GlobalStyles } from "../constants/Style";
 import IconButton from "../components/UI/IconButton";
 import Button from "../components/UI/Button";
+import { ExpenseContext } from "../../store/expense-context";
+import UpdateForm from "../components/UpdateForm";
+import { getFormatDate } from "../util/date";
 
 
 export default function ManageExpense({ route, navigation }) {
     const editedExpenseId = route.params?.expenseId;
     const isEditing = !!editedExpenseId;
+    const expenseCtx = useContext(ExpenseContext);
+    const [description, setDescription] = useState("");
+    const [amount, setAmount] = useState("");
+    const [type, setType] = useState("");
 
+    const handleDescription = (value) => {
+        setDescription(value)
+    }
+
+    const handleAmount = (value) => {
+        setAmount(value)
+    }
+
+    const handleType = (value) => {
+        setType(value);
+        console.log(type);
+    }
     useLayoutEffect(() => {
         navigation.setOptions({
             title: isEditing ? "Edit Expense" : "Add Expense"
@@ -21,6 +40,26 @@ export default function ManageExpense({ route, navigation }) {
     }
 
     const handleConfirm = () => {
+        if (isEditing) {
+            expenseCtx.updateExpense(editedExpenseId, {
+                description: description,
+                amount: Number(amount),
+                date: new Date(),
+                type: type
+            })
+        } else {
+            expenseCtx.addExpense({
+                description: description,
+                amount: Number(amount),
+                date: new Date(),
+                type: type
+            })
+        }
+        navigation.goBack();
+    }
+
+    const handleDelete = () => {
+        expenseCtx.deleteExpense(editedExpenseId);
         navigation.goBack();
     }
     return (
@@ -34,13 +73,18 @@ export default function ManageExpense({ route, navigation }) {
                 <Button mode='flat' onPress={handleCancel}
                     style={styles.button}>Cancel</Button>
                 <Button onPress={handleConfirm} style={styles.button}
-                >{isEditing ? 'Update' : 'Upload'}</Button>
+                >{isEditing ? 'Update' : 'Add'}</Button>
             </View>
             <View style={styles.line}></View>
+
+            <UpdateForm amount={amount} description={description}
+                onSelect={(value) => handleType(value)}
+                onSetAmount={(value) => handleAmount(value)}
+                onSetDescription={(value) => handleDescription(value)} />
             {isEditing && (
                 <View>
                     <IconButton icon="trash-can-outline"
-                        color="red" size={36} />
+                        color="red" size={36} onPress={handleDelete} />
                 </View>
             )}
         </LinearGradient>
@@ -50,7 +94,8 @@ export default function ManageExpense({ route, navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        alignItems: 'center'
     },
 
     line: {
@@ -65,7 +110,8 @@ const styles = StyleSheet.create({
     buttons: {
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: 10
     },
 
     button: {

@@ -2,15 +2,20 @@ import { View, StyleSheet } from "react-native";
 import { DUMMY_EXPENSES } from "../data/data";
 import TotalCustom from "../components/TotalCustom";
 import ExpenseList from "../components/ExpenseList";
+import { useContext, useEffect } from "react";
+import { ExpenseContext } from "../../store/expense-context";
 
 export default function Homepage() {
-    const expensesSum = DUMMY_EXPENSES.reduce((sum, expense) => {
+    const expenseCtx = useContext(ExpenseContext);
+    const expensesSum = expenseCtx.expenses.reduce((sum, expense) => {
         return sum + expense.amount;
     }, 0)
+
+    
     return (
         <View style={styles.container}>
             <TotalCustom total={expensesSum.toFixed(2)} screen="All" title='Spent'/>
-            <ExpenseList list={DUMMY_EXPENSES} />
+            <ExpenseList list={expenseCtx.expenses} />
         </View>
     )
 }
